@@ -1,0 +1,97 @@
+{
+  "hasError": false,
+  "viewAdapter": null,
+  "isCritical": false,
+  "displayable": true,
+  "overriddenViewAdapter": null,
+  "listOfPrices": {
+    "BUYING": {
+      "priceType": "BUYING",
+      "priceLabel": "Price:",
+      "minNumericValue": {
+        "fullValue": 20.79,
+        "currencyFormatter": {
+          "delegatee": null,
+          "unwrappingSerializer": false
+        },
+        "currencySymbol": "£",
+        "removeFractionOfPrice": false,
+        "wholePartDisplayString": "20",
+        "fractionalPartDisplayString": "79",
+        "wholePart": 20,
+        "fractionalPart": 79,
+        "trailingZeroesRemovalEnabled": false
+      },
+      "maxNumericValue": {
+        "fullValue": 20.79,
+        "currencyFormatter": {
+          "delegatee": null,
+          "unwrappingSerializer": false
+        },
+        "currencySymbol": "£",
+        "removeFractionOfPrice": false,
+        "wholePartDisplayString": "20",
+        "fractionalPartDisplayString": "79",
+        "wholePart": 20,
+        "fractionalPart": 79,
+        "trailingZeroesRemovalEnabled": false
+      },
+      "suppressedByMap": false,
+      "displayString": "£20.79",
+      "pricePerUnit": null,
+      "templatePath": "/WEB-INF/views/jsp/features/unifiedPrice/common/buyingPrice.jsp",
+      "singleValued": true
+    }
+  },
+  "pricesByOfferType": {
+    "NEW": {
+      "priceType": "BUYING",
+      "priceLabel": "Price:",
+      "minNumericValue": {
+        "fullValue": 20.79,
+        "currencyFormatter": {
+          "delegatee": null,
+          "unwrappingSerializer": false
+        },
+        "currencySymbol": "£",
+        "removeFractionOfPrice": false,
+        "wholePartDisplayString": "20",
+        "fractionalPartDisplayString": "79",
+        "wholePart": 20,
+        "fractionalPart": 79,
+        "trailingZeroesRemovalEnabled": false
+      },
+      "maxNumericValue": {
+        "fullValue": 20.79,
+        "currencyFormatter": {
+          "delegatee": null,
+          "unwrappingSerializer": false
+        },
+        "currencySymbol": "£",
+        "removeFractionOfPrice": false,
+        "wholePartDisplayString": "20",
+        "fractionalPartDisplayString": "79",
+        "wholePart": 20,
+        "fractionalPart": 79,
+        "trailingZeroesRemovalEnabled": false
+      },
+      "suppressedByMap": false,
+      "displayString": "£20.79",
+      "pricePerUnit": null,
+      "templatePath": "/WEB-INF/views/jsp/features/unifiedPrice/common/buyingPrice.jsp",
+      "singleValued": true
+    }
+  },
+  "listOfSavings": {},
+  "priceToPayType": "BUYING",
+  "currency": "GBP",
+  "currencyFormatter": {
+    "delegatee": null,
+    "unwrappingSerializer": false
+  },
+  "currencySymbol": "£",
+  "mapShown": false,
+  "singleLinePricingLayoutEnabled": false,
+  "showPriceBlock": true,
+  "loggingInformation": null
+}
