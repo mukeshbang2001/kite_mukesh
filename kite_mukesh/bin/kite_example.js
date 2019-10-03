@@ -3,8 +3,10 @@ var Promise = require('promise');
 var config = require('./config.js');
 
 var lotsMap = {
-    "NIFTY19SEPFUT" : 75,
-    "BANKNIFTY19SEPFUT" : 20
+    "NIFTY" : 75,
+    "BANKNIFTY" : 20,
+    "BAJFI": 250,
+    "TITAN": 750
 }
 
 var api_key = config.api_key,
@@ -61,12 +63,28 @@ function init() {
     // getOHLC(["NSE:RELIANCE"]);
     // getLTP(["NSE:RELIANCE"]);
 
-    bracketOrderPlace1("NIFTY19SEPFUT", "BUY", 25, 10, 10, 12000, false, function (err, res) {
+
+
+
+    time1 = new Date().getTime();
+    console.log("timestamp:" + time1)
+/*
+    bracketOrderPlace1("NIFTY19OCTFUT", "BUY", 5, 10, 10, 0, false, function (err, res) {
         console.log("Err;%j, Res:%j", err, res)
     });
 
-}
+/*
+    bracketOrderPlace1("NIFTY19OCT11400PE", "BUY", 1, 10, 10, 0, false, function (err, res) {
+        console.log("Err;%j, Res:%j", err, res)
+    });
 
+    bracketOrderPlace1("NIFTY19O0311500PE", "BUY", 1, 10, 10, 0, false, function (err, res) {
+        console.log("Err;%j, Res:%j", err, res)
+    });
+*/
+
+}
+var time1, time2;
 function sessionHook() {
     console.log("User loggedout");
 }
@@ -217,12 +235,18 @@ function isPriceReasonable(priceCheck, tradingSymbol, currPrice, toBeExercisePri
     }
 }
 
+function getLotsize(tradingSymbol) {
+    return lotsMap[tradingSymbol.substr(0, tradingSymbol.indexOf('19'))];
+
+
+}
+
 function bracketOrderPlace1(tradingSymbol, transaction_type, lots, stopLoss, target, price, priceCheck, callback) {
     var orderType = "LIMIT";
-    var myQuantity = lots*lotsMap[tradingSymbol];
+    var myQuantity = lots*getLotsize(tradingSymbol);
     console.log("Bracket Order placed request: ")
 
-    if (!lotsMap[tradingSymbol]){
+    if (!myQuantity){
         // get the details from Kite & add it to the lotsMap.
         console.log("Currnetly this tradingsymbol is not traded by this program:" + tradingSymbol);
         return callback("Currnetly this tradingsymbol is not traded by this program:" + tradingSymbol);
@@ -295,15 +319,21 @@ function bracketOrderPlace1(tradingSymbol, transaction_type, lots, stopLoss, tar
             }
             if (price ==0){
                 console.log("LOTS not enough. place less number.")
+                // return callback("LOTS not enough. place less number.")
             }
             console.log("setting price for transaction:" + price)
 
             // check if we can take this price
             if(!isPriceReasonable(priceCheck, tradingSymbol, value[instrument].last_price, price))
                 price = 0;
+
+            if(price ==0)
+                price = value[instrument].last_price
             payLoad.price = price
 
             placeOrder(payLoad, callback)
+        }).catch(function (reason) {
+            callback(reason)
         })
     } else {
         placeOrder(payLoad, callback)
@@ -315,20 +345,43 @@ function bracketOrderPlace1(tradingSymbol, transaction_type, lots, stopLoss, tar
 function placeOrder(payLoad, callback) {
 
     console.log("Placing order: %j", payLoad)
+
     kc.placeOrder(kc.VARIETY_BO, payLoad).then(function(resp) {
-        console.log("Bracket Order placed response: %j",resp)
+
+        time2 = new Date().getTime();
+        var diff = time2 - time1;
+        console.log("Bracket Order placed response: %j | total time :%s",resp, diff)
+
+        kc.getOrderTrades(resp.order_id).then(function (value) {
+            console.log("order trades: %j", value)
+        }).catch(function (reason) {
+            console.log("order trades error: %j", reason)
+        })
+
+        kc.getOrderHistory(resp.order_id).then(function (value) {
+            console.log("order history: %j", value)
+
+            value.forEach(function (order) {
+                if(order.status == 'REJECTED')
+                    callback(order.status_message)
+                if(order.status == 'COMPLETED')
+                    callback(null, order.status_message)
+            })
+        }).catch(function (reason) {
+            console.log("order history error: %j", reason)
+        })
+
+
         callback(null, resp)
     }).catch(function(err) {
         console.log("Bracket Order placed error: %j", err )
         callback(err)
     });
 
+
 }
 
 
-module.exports.setLotSize = function (tradingSymbol, lotSize) {
-    lotsMap[tradingSymbol] = lotSize;
-}
 module.exports.setAccessToken = function (_accessToken) {
     if(_accessToken)
         access_token = _accessToken

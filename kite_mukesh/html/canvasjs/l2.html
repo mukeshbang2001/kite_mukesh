@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<script>
+
+function stockTypeChanged() {
+    var v = $('#stock_type option:selected').text();
+    if(v == 'OPT'){
+        $('#tradingSymbol').val('NIFTY19O0311500PE')
+    }
+    else {
+        $('#tradingSymbol').val('NIFTY19OCTFUT')
+    }
+
+}
+function submitForm(formId, successFn){
+
+    console.log("Submitting form: ")
+    var form = document.getElementById(formId);
+
+    if (form.getAttribute("id")!='' || form.getAttribute("id")!=null){
+        var id = form.getAttribute("id");
+    } else {
+        console.log("Form id attribute was not set; the form cannot be serialized");
+    }
+
+}
+
+
+$( document ).ready(function() {
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/kite/test',
+        data: '',
+        dataType: "json",
+        success: function (a, b, c) {
+            console.log("success: a:%j, b:%j, c:%j", a,b,c)
+        },
+        error: function (a, b, c) {
+            console.log("error: a:%j, b:%j, c:%j", a,b,c)
+        },
+    });
+
+});
+
+
+</script>
+
+<form id='nifty' action="http://localhost:3000/kite/placeOrder">
+
+    <input type="radio" name="platform" value="kite" checked> ZERODHA
+    <input type="radio" name="platform" value="icici"> ICICI<br><br>
+
+    Trade Symbol:  <input type="text" id="tradingSymbol" name="tradingSymbol" value="NIFTY19OCTFUT"> &nbsp&nbsp
+
+    Stock Type:
+    <select id="stock_type" name="stock_type" onchange='stockTypeChanged()'>
+        <option value="fut" selected>FUT</option>
+        <option value="opt">OPT</option>
+
+    </select>
+    <br><br>
+
+
+
+    No. of Lots: <input type="number" name="lots"  min="0" max="25" step="5" value=10>
+    <br><br>
+
+    Target: <input type="number" name="target" value=10  min="0" max="100"> &nbsp&nbsp
+    StopLoss: <input type="number" name="stopLoss"  min="0" max="20" value=10><br><br>
+
+    <input type="reset">
+
+    <input type="hidden" name='last_price' value="$('#last_price').text()">
+    <input type="button" name="transactionType" value="BUY" onclick="submitForm('nifty', function() {
+      alert('DONE')
+    })">
+    <input type="submit" name="transactionType" value="SELL"> <br>
+
+</form>
+
+Stock price: <span id="last_price">12345</span><br/>
+
+</body>
+</html>

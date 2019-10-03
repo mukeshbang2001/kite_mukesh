@@ -14,6 +14,7 @@ kc.generateSession(reqToken, api_secret)
     .then(function (response) {
         console.log("generated the session")
         console.log("response: %j", response)
+        console.log("access Token:" + response.access_token)
         var access_token = response.access_token;
         var public_token = response.public_token;
     })
