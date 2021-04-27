@@ -1,0 +1,35 @@
+FOR VIX
+
+[Len:28][Instrument:264969] packetByteArr:0,4,11,9,0,0,15,72,0,0,15,155,0,0,13,170,0,0,15,83,0,0,15,83,255,255,255,245
+Packet: {"instrumentToken":264969,"lastTradePrice":39.12,"lastTradeQnty":3995,"averageTradedPrice":34.98,"volTraded":3923,"totalBuyQnty":3923,"totalSellQnty":4294967285,"openPrice":null,"highPrice":null,"lowPrice":null,"closePrice":null,"timeStamp":null,"openInt":null,"openIntDayHigh":null,"openIntDayLow":null,"exchangeTs":null}
+
+For ltp
+
+[Len:8][Instrument:408065] packetByteArr:0,6,58,1,0,1,1,8
+Packet: {"instrumentToken":408065,"lastTradePrice":658,"lastTradeQnty":null,"averageTradedPrice":null,"volTraded":null,"totalBuyQnty":null,"totalSellQnty":null,"openPrice":null,"highPrice":null,"lowPrice":null,"closePrice":null,"timeStamp":null,"openInt":null,"openIntDayHigh":null,"openIntDayLow":null,"exchangeTs":null}
+
+
+
+For ltpc
+
+[Len:12][Instrument:884737] packetByteArr:0,13,128,1,0,0,28,252,0,0,29,141
+Packet: {"instrumentToken":884737,"lastTradePrice":74.2,"lastTradeQnty":7565,"averageTradedPrice":null,"volTraded":null,"totalBuyQnty":null,"totalSellQnty":null,"openPrice":null,"highPrice":null,"lowPrice":null,"closePrice":null,"timeStamp":null,"openInt":null,"openIntDayHigh":null,"openIntDayLow":null,"exchangeTs":null}
+
+
+For quote
+[Len:44][Instrument:884737] packetByteArr:0,13,128,1,0,0,28,252,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,29,76,0,0,30,10,0,0,28,232,0,0,29,141
+Packet: {"instrumentToken":884737,"lastTradePrice":74.2,"lastTradeQnty":0,"averageTradedPrice":0,"volTraded":0,"totalBuyQnty":0,"totalSellQnty":0,"openPrice":75,"highPrice":76.9,"lowPrice":74,"closePrice":75.65,"timeStamp":null,"openInt":null,"openIntDayHigh":null,"openIntDayLow":null,"exchangeTs":null}
+
+
+For full
+[Len:184][Instrument:128094212] packetByteArr:7,162,144,4,0,0,131,219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,131,219,0,0,131,219,0,0,131,219,0,0,125,150,94,162,133,88,0,0,0,0,0,0,0,0,0,0,0,0,94,162,191,170,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Packet: {"instrumentToken":128094212,"lastTradePrice":337.55,"lastTradeQnty":0,"averageTradedPrice":0,"volTraded":0,"totalBuyQnty":0,"totalSellQnty":0,"openPrice":337.55,"highPrice":337.55,"lowPrice":337.55,"closePrice":321.5,"timeStamp":1587709272,"openInt":0,"openIntDayHigh":0,"openIntDayLow":0,"exchangeTs":1587724202}
+
+
+
+For FNO & Cash, is the outlay same ?
+For Nifty index is the outlay same ?
+
+Check:
+
+884737,

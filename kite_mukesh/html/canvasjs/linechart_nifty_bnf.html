@@ -1,0 +1,465 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Style the header */
+        header {
+            background-color: #666;
+            padding: 30px;
+            text-align: center;
+            font-size: 35px;
+            color: white;
+        }
+
+        /* Create two columns/boxes that floats next to each other */
+        nav {
+            float: left;
+            width: 30%;
+            height: 320px; /* only for demonstration, should be removed */
+            background: whitesmoke;
+            padding: 20px;
+        }
+
+        /* Style the list inside the menu */
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        article {
+            float: left;
+            padding: 20px;
+            width: 70%;
+            background-color: #f1f1f1;
+            height: 320px; /* only for demonstration, should be removed */
+        }
+
+        /* Clear floats after the columns */
+        section:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Style the footer */
+        footer {
+            background-color: #777;
+            padding: 10px;
+            text-align: center;
+            color: white;
+        }
+
+        /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+        @media (max-width: 600px) {
+            nav, article {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+
+    <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script>
+
+        window.onload = function () {
+
+            window.WebSocket = window.WebSocket || window.MozWebSocket;
+
+            var connection = new WebSocket('ws://127.0.0.1:3000');
+
+            connection.onopen = function () {
+                console.log("connection opened")
+                // connection is opened and ready to use
+
+                input.removeAttr('disabled');
+                // status.text('Choose name:');
+                connection.send(JSON.stringify({a: 'test'}))
+                connection.send('test')
+
+            };
+
+            connection.onerror = function (error) {
+                console.log("connection error")
+                // an error occurred when sending/receiving data
+                content.html($('<p>', {
+                    text: 'Sorry, but there\'s some problem with your '
+                    + 'connection or the server is down.'
+                }));
+
+            };
+
+            connection.onmessage = function (message) {
+                // try to decode json (I assume that each message
+                // from server is json)
+                // console.log("msg:%j", message)
+                try {
+                    var json = JSON.parse(message.data);
+
+                    if (json.chartType == 'multi')
+                        updateChart(json.data, chartNifty)
+                    if (json.chartType == 'candle') {
+                        // updateChart2(json, json.stockName);
+                    }
+                    if (json.event == 'details') {
+                        $('#last_price').text(json.data.last_price);
+                        $('#nifty #last_price_param').val(json.data.last_price)
+
+                        $('#percent_change').text(json.data.percent_change);
+                        $('#price_change').text(json.data.price_change);
+                        $('#lots_traded').text(json.data.volume);
+                        $('#lots_traded_last_tick').text(json.data.volume_change);
+
+
+                    }
+
+                } catch (e) {
+                    console.log('This doesn\'t look like a valid JSON: ',
+                        message.data, e);
+                    return;
+                }
+                // handle incoming message
+            };
+
+            var dataPointsMap = {
+                'candle_sec_60': [],
+                'candle_sec_30': [],
+                'candle_sec_3': []
+            };
+            var xv = {
+                'candle_sec_60': 0,
+                'candle_sec_30': 0,
+                'candle_sec_3': 0
+            };
+
+            var chart2 = new CanvasJS.Chart("chartContainer2", {
+                animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                exportEnabled: true,
+                title: {
+                    text: "Candle sticks"
+                },
+                subtitles: [{
+                    text: "Weekly Averages"
+                }],
+                axisX: {
+                    interval: 1
+                    // valueFormatString: "MMM"
+                },
+                axisY: {
+                    includeZero: false,
+                    prefix: "$",
+                    title: "Price"
+                },
+                toolTip: {
+                    content: "Date: {x}<br /><strong>Price:</strong><br />Open: {y[0]}, Close: {y[3]}<br />High: {y[1]}, Low: {y[2]}"
+                },
+                legend: {
+                    cursor: "pointer",
+                    verticalAlign: "top",
+                    horizontalAlign: "center",
+                    dockInsidePlotArea: true,
+                    itemclick: toogleDataSeries
+                },
+                data: [{
+                    type: "candlestick",
+                    yValueFormatString: "$##0.00",
+                    axisYType: "secondary",
+                    name: "3 sec",
+                    showInLegend: true,
+                    markerSize: 0,
+                    dataPoints: dataPointsMap['candle_sec_3']
+                }, {
+                    type: "candlestick",
+                    axisYType: "secondary",
+                    name: "30 sec",
+                    showInLegend: true,
+                    markerSize: 0,
+                    yValueFormatString: "$##0.00",
+                    dataPoints: dataPointsMap['candle_sec_30']
+
+                }, {
+                    type: "candlestick",
+                    axisYType: "secondary",
+                    name: "60 sec",
+                    showInLegend: true,
+                    markerSize: 0,
+                    yValueFormatString: "$##0.00",
+                    dataPoints: dataPointsMap['candle_sec_60']
+                }]
+            });
+
+            function toogleDataSeries1(e) {
+                if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else {
+                    e.dataSeries.visible = true;
+                }
+                chart2.render();
+            }
+
+            function toogleDataSeries(e) {
+                if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else {
+                    e.dataSeries.visible = true;
+                }
+                chart2.render();
+            }
+
+
+            function updateChart2(json) {
+                console.log("%j", json.data)
+                if (json.data.type == 'update') {
+                    dataPointsMap[json.chartName][dataPointsMap[json.chartName].length - 1] =
+                        {
+                            x: xv[json.chartName],
+                            y: [
+                                json.data.open,
+                                json.data.high,
+                                json.data.low,
+                                json.data.close
+                            ]
+                        }
+                } else {
+                    dataPointsMap[json.chartName].push({
+                        x: xv[json.chartName]++,
+                        y: [
+                            json.data.open,
+                            json.data.high,
+                            json.data.low,
+                            json.data.close
+                        ]
+                    });
+
+                }
+
+
+                if (dataPointsMap[json.chartName].length > dataLength) {
+                    dataPointsMap[json.chartName].shift();
+                }
+                chart2.render();
+            }
+
+
+
+            var chartsMap = {
+                "nifty": chartNifty,
+                "banknifty": chartBankNifty
+            }
+            var chartBankNifty = new CanvasJS.Chart("chartContainer-banknifty", {
+                zoomEnabled: true,
+                title: {
+                    text: "Dynamic Data"
+                },
+                axisX: {
+                    valueFormatString: "hh:mm:ss"
+                },
+                axisY: {
+                    includeZero: false
+                },
+                legend: {
+                    cursor: "pointer",
+                    verticalAlign: "top",
+                    horizontalAlign: "center",
+                    // dockInsidePlotArea: true,
+                    itemclick: toogleDataSeries1
+                },
+                data: [{
+                    type: "line",
+                    showInLegend: true,
+                    xValueType: "dateTime",
+                    xValueFormatString: "hh:mm:ss TT",
+                    axisYType: "secondary",
+                    name: "price",
+                    markerSize: 0,
+                    dataPoints: []
+                }, {
+                    type: "line",
+                    showInLegend: true,
+                    xValueType: "dateTime",
+                    xValueFormatString: "hh:mm:ss TT",
+                    name: "volume",
+                    markerSize: 0,
+                    dataPoints: []
+                }]
+            });
+
+            var chartNifty = new CanvasJS.Chart("chartContainer-nifty", {
+                zoomEnabled: true,
+                title: {
+                    text: "Dynamic Data"
+                },
+                axisX: {
+                    valueFormatString: "hh:mm:ss"
+                },
+                axisY: {
+                    includeZero: false
+                },
+                legend: {
+                    cursor: "pointer",
+                    verticalAlign: "top",
+                    horizontalAlign: "center",
+                    // dockInsidePlotArea: true,
+                    itemclick: toogleDataSeries1
+                },
+                data: [{
+                    type: "line",
+                    showInLegend: true,
+                    xValueType: "dateTime",
+                    xValueFormatString: "hh:mm:ss TT",
+                    name: "price",
+                    markerSize: 0,
+                    dataPoints: []
+                }, {
+                    type: "line",
+                    showInLegend: true,
+                    xValueType: "dateTime",
+                    axisYType: "secondary",
+                    xValueFormatString: "hh:mm:ss TT",
+                    name: "volume",
+                    markerSize: 0,
+                    dataPoints: []
+                }]
+            });
+
+
+            var xVal = 0;
+            var updateInterval = 2300;
+            var dataLength = 500; // number of dataPoints visible at any point
+
+            var updateChart = function (data, chart) {
+
+
+                if (data) {
+                    var dps = chart.options.data[0].dataPoints;
+                    dps.push({
+                        x: data.x,
+                        y: data.last_price
+                    })
+                    var dps_vol = chart.options.data[1].dataPoints;
+                    dps_vol.push({
+                        x: data.x,
+                        y: data.volume_change
+                    })
+
+                }
+
+                if (dps.length > dataLength) {
+                    dps.shift();
+                }
+                if (dps_vol.length > dataLength) {
+                    dps_vol.shift();
+                }
+
+                chart.render();
+            };
+
+        }
+
+        function submitForm(formId, transactionType, successFn){
+
+            console.log("Submitting form: ")
+            var form = document.getElementById(formId);
+            $('#' + formId + " #transactionType").val(transactionType)
+
+            if (form.getAttribute("id")!='' || form.getAttribute("id")!=null){
+                var id = form.getAttribute("id");
+            } else {
+                console.log("Form id attribute was not set; the form cannot be serialized");
+            }
+
+            $.ajax({
+                type: form.method,
+                url: form.action,
+                data: $('#'+formId).serializeArray(),
+                dataType: "json",
+                success: function (response) {
+                    console.log("Success")
+                    alert(response)
+                },
+                error: function(a, b, c){
+                    console.log("failed: ", a,b,c)
+                    console.log("failed: ", a)
+                    console.log("failed: ", b)
+                    console.log("failed: ",c)
+                }
+            });
+            return false;
+        }
+
+    </script>
+
+</head>
+<body>
+
+<section>
+
+    <nav>
+        <div id="data_details_nifty">
+
+            <ul>
+                <li>Stock price: <span id="last_price">no data yet</span><br/></li>
+                <li>Percent change: <span id="percent_change">no data yet</span><br/></li>
+                <li>Price change: <span id="price_change">no data yet</span><br/></li>
+                <li>Volume till now: <span id="lots_traded">no data yet</span><br/></li>
+                <li>Volume till now: <span id="lots_traded_last_tick">no data yet</span><br/></li>
+
+            </ul>
+        </div>
+
+        <form id='nifty' action="http://localhost:3000/kite/placeOrder">
+
+            <input type="radio" name="platform" value="kite" checked> ZERODHA
+            <input type="radio" name="platform" value="icici"> ICICI<br><br>
+
+            Trade Symbol:  <input type="text" name="tradingSymbol" value="NIFTY"> &nbsp&nbsp
+
+            Stock Type:
+            <select id="stock_type" id="stock_type" name="stock_type">
+                <option value="fut" selected>FUT</option>
+                <option value="opt">OPT</option>
+
+            </select>
+            <br><br>
+
+
+
+            No. of Lots: <input type="number" name="lots"  min="0" max="25" step="5" value=10>
+            <br><br>
+
+            Target: <input type="number" name="target" value=10  min="0" max="100"> &nbsp&nbsp
+            StopLoss: <input type="number" name="stopLoss"  min="0" max="20" value=10><br><br>
+
+            <input type="reset">
+
+            <input type="hidden" id='last_price_param' name='last_price_param' value="">
+            <input type="hidden" id='transactionType' name='transactionType' value="">
+            <input type="button"  value="BUY" onclick="submitForm('nifty', 'BUY')">
+            <input type="button"  value="SELL" onclick="submitForm('nifty', 'SELL')"> <br>
+
+        </form>
+
+    </nav>
+
+
+    <article>
+        <div id="chartContainer-nifty" style="height: 280px; width: 1000px;"></div>
+
+    </article>
+
+</section>
+
+
+<!--<div id="chartContainer2" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>-->
+</body>
+</html>

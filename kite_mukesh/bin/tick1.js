@@ -223,7 +223,7 @@ function onTicks(ticks) {
 
 
         // ws_connection.send(JSON.stringify(stocksMap[instrument]))
-
+        console.log('sending tick: %j', ticks)
         ws_connection.send(JSON.stringify({
             event: 'details',
             data: {
@@ -252,8 +252,8 @@ function onTicks(ticks) {
         stockData.last_tick = tick;
         stockData.ticks.push(tick);
 
-        // _channel.sendToQueue("trade_ticks", Buffer.from(JSON.stringify(tick)));
-        // console.log(" [x] Sent %s", JSON.stringify(stockData));
+        _channel.sendToQueue("trade_ticks", Buffer.from(JSON.stringify(tick)));
+        console.log(" [x] Sent %s", JSON.stringify(stockData));
 
 
     })

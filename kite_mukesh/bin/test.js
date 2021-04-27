@@ -1,1 +1,0 @@
-console.log("Time;%j", new Date().getTime())

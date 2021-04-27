@@ -40,7 +40,7 @@ if(!access_token) {
 }
 
 function init() {
-    console.log("login url: " + kc.getLoginURL())
+    console.log("login url1: " + kc.getLoginURL())
 
 
     getInstruments();
