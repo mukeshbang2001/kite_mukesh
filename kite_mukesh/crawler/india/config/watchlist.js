@@ -1,6 +1,9 @@
 module.exports.watchlist = {
-    FNO: [ 'NIFTY'],
-    CASH: []
+    FNO: [ ],
+
+    CASH: ['NIFTY'] 
+    //CASH: ['ZEEL','IRCTC','NIFTY','MINLIM'] 
+    //CASH: ['BAJAJFINS','MINLIM','SRF','TATASTEEL','NIFTY','ADANIENT'] 
 }
 
 module.exports.oi_watchlist = []
