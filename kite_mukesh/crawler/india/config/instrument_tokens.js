@@ -11,7 +11,7 @@ var cashInstrumentsNse = {
     ZOMATO: 1304833,
 	SRF:837889,NIFTY : 256265,
     TATASTEEL: 895745,
-    BANKNIFTY : 15665922,
+    BANKNIFTYFUT: 13208322,
     //Finance & Banks
     ADANIENT:6401,
     SBIN: 779521,

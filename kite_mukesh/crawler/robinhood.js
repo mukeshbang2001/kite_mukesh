@@ -18,18 +18,18 @@ const schwab_options = {
 };
 
 var stockMap = {
-    // 'msft': '50810c35-d215-4866-9758-0ada4ac79ffa',
+    'msft': '50810c35-d215-4866-9758-0ada4ac79ffa',
     // 'nflx':'81733743-965a-4d93-b87a-6973cb9efd34',
 
     // 'zm': '35875944-ffb7-47eb-a2e5-582ba9f26a8d',
     // 'crm':'cf1d849d-06f7-4374-9e84-13129713d0c7',
     // 'bynd': 'aef7105d-8209-48e5-be1c-b9013206b0c9',
     // 'apple': '450dfc6d-5510-4d40-abfb-f633b7d9be3e',
-    'tesla': 'e39ed23a-7bd1-4587-b060-71988d9ef483',
+    //'tesla': 'e39ed23a-7bd1-4587-b060-71988d9ef483',
     // 'googl': '54db869e-f7d5-45fb-88f1-8d7072d4c8b2',
     // 'nvda':'a4ecd608-e7b4-4ff3-afa5-f77ae7632dfb',
     spy: '8f92e76f-1e0e-4478-8580-16a6ffcfaef5',
-    dia: 'bab3b12b-4216-4b01-b2d8-9587ee5f41cf',
+    //dia: 'bab3b12b-4216-4b01-b2d8-9587ee5f41cf',
 
     QQQ: '1790dd4f-a7ff-409e-90de-cad5efafde10',
     // chain: '1c9d052c-165d-43a3-878d-3a0a0ca1ab49',
@@ -44,7 +44,7 @@ var INSTRUMENT_URL = 'https://api.robinhood.com/instruments/%s/'
 const options = {
     url: 'https://api.robinhood.com/marketdata/quotes/?bounds=trading&instruments=',
     headers: {
-        'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJleHAiOjE2MTc5OTk3NDUsInRva2VuIjoiWVVtMlFXbmd0SW5jc3dPSDhwdXpVT0FuNHh3d1VCIiwidXNlcl9pZCI6IjQxZjkzZjY5LWVkZDctNDNjYi04NGMzLTQ5YzI5MzVjNzJlOCIsImRldmljZV9oYXNoIjoiN2UxYzA2OWI0NWYwOGNkOTM2NDhmMjY3ZWEyZDZkZjAiLCJzY29wZSI6IndlYl9saW1pdGVkIiwiZGN0IjoxNTk0MDU2MjUwLCJzZXJ2aWNlX3JlY29yZHMiOlt7ImhhbHRlZCI6ZmFsc2UsInNlcnZpY2UiOiJicm9rZWJhY2tfdXMiLCJzaGFyZF9pZCI6Niwic3RhdGUiOiJhdmFpbGFibGUifV0sInVzZXJfb3JpZ2luIjoiVVMiLCJvcHRpb25zIjp0cnVlLCJsZXZlbDJfYWNjZXNzIjpmYWxzZX0.GhF2M1bQ8aST3P5Xt2ToGR9JVO2tNN9SsVmAVd6hnQF0js_QHZv9ZbZisH5X7bPRCBjhxJ1PiE6lT4GfjwqioPniPvThRGlCt_7ETNL3nywGDTDISSjZbLHdwFM_P62-j568fwBsggwDjUiJfVYPxs7Ewo457ZYBfxHBnWZ3Qj0qbOPybaHHHirGDScRJAU-9MkjfwwcrcikJ3DULY42LybqjnU7bRb9SPA0EWj_HiSKQFU0M1uAF-O6AvEhQePzWHhpYsI-u9bgShL0RyOMUqn2qBtrZSORd574yWu2K1V7oB_va8nTCsGMhSpOpJlB-nSV-Crr0zZGzKjdtuYaMQ',
+        'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJleHAiOjE2MjM4NzAwMTIsInRva2VuIjoiTWMyTTBNMGFFQTJYaVpuVmUzQm5JWm1yOHd5Mnk0IiwidXNlcl9pZCI6IjQxZjkzZjY5LWVkZDctNDNjYi04NGMzLTQ5YzI5MzVjNzJlOCIsImRldmljZV9oYXNoIjoiZWRiMzg0ODM5YjFkNTlhMWZhZjBlMmZjZjQ0NjY3YjUiLCJzY29wZSI6ImludGVybmFsIiwiZGN0IjoxNjE4MjI4NDM1LCJzZXJ2aWNlX3JlY29yZHMiOlt7ImhhbHRlZCI6ZmFsc2UsInNlcnZpY2UiOiJicm9rZWJhY2tfdXMiLCJzaGFyZF9pZCI6Niwic3RhdGUiOiJhdmFpbGFibGUifV0sInVzZXJfb3JpZ2luIjoiVVMiLCJvcHRpb25zIjp0cnVlLCJsZXZlbDJfYWNjZXNzIjpmYWxzZX0.nhOJOPYeT7E_l9ZrXONnhTM1c2HPdXlISfmm5vmkNs-U4y7JjYT36rXAR_vOChBuu31I06sZIgVnZpjrruSJZ1zmTcam74_PYDcuQIun9iBETRYEKN9mvnPG6S4gh9Ubs0F6qlArbBw9UNIX8kUvfRWtyfBKeQYzjZ9DW8BhkfUKJC-i-yi4ChSf14B7cmdFNOMHimIqkzLq8AKnuaIq-3rZ7Y8yRevYaI1IRBi-MarVQ8XRtpgkc2dZAkZYV85216SGfs2Ujo-T1XbwmJ0xqtmBfwqTE6ZdN2aXb5WXSKDprKAXkSWPz-2lZeCw0DnAgzaYWgfGnzmOlHT-7kGJtQ', 
         'authority': 'api.robinhood.com'
     }
 };
@@ -142,6 +142,7 @@ amqp.connect('amqp://localhost', function (error0, connection) {
         var instrumentString = Object.keys(stockMap).map(item => encodeURIComponent(util.format(INSTRUMENT_URL, stockMap[item]))).join();
 
         options.url += instrumentString
+console.log(options.url)
         ping();
         // positionsUpdate();
 
