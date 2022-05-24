@@ -4,6 +4,7 @@ var instruments = {
 
 var cashInstrumentsNse = {
     vix: 264969,
+	LIC:2426881,
 	ZEEL: 975873,
 	IRCTC:3484417,
 	EXIDE:173057,
