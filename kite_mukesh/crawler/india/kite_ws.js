@@ -23,7 +23,7 @@ function swap(json, suffix){
 
 
 //const url = 'wss://ws.zerodha.com/?user_id=YJ6753'
-const url = 'wss://ws.zerodha.com/?api_key=kitefront&user_id=YJ6753&enctoken=1hrDkGLjxO%2FUIomNJ1gU25MCiBFW4s0fDCV%2F2FMtjSAnF8T8g0Hhzd7M4yuIYYT1OgAR6nPgV%2BDyJx6omq30oMRrGDLeu7UTPZjSOY1Zk0Kngr31kP0gvQ%3D%3D&uid=1653363839362&user-agent=kite3-web&version=2.9.11'
+const url = 'wss://ws.zerodha.com/?api_key=kitefront&user_id=YJ6753&enctoken=dlahylpeyu156jgycumT1Ld9Tq8vW5pe2HfTkSjLldyPSU8zKcMJwaTFSRp%2BYnxaTcQQJ1y1pxwEdwGNorDe7%2B0cpQ%2FHXqVP%2Fdupqgi19Tg11oWBcQwzCQ%3D%3D&uid=1654841295122&user-agent=kite3-web&version=2.9.11'
 
 let wsConnection = new WebSocket(url);
 

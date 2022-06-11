@@ -1,5 +1,5 @@
 module.exports.watchlist = {
-    FNO: [ ],
+    FNO: [ 'BANKNIFTY'],
 
     CASH: ['LIC','NIFTY','ADANIENT'] 
     //CASH: ['ZEEL','IRCTC','NIFTY','MINLIM'] 
